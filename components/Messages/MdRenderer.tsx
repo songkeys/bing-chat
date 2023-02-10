@@ -11,14 +11,14 @@ import {
 	HoverCard,
 	Image,
 	Anchor,
-	Group,
 	Stack,
+	Box,
 } from "@mantine/core";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 // @ts-ignore
-import remarkSuper from "remark-super";
+import remarkSuper from "./lib/remark-super";
 
 export default function MdRenderer({
 	children,
@@ -31,6 +31,7 @@ export default function MdRenderer({
 
 	return (
 		<ReactMarkdown
+			className="break-words overflow-hidden"
 			components={{
 				h1: ({ node, ...props }) => <Title order={1} {...props} />,
 				h2: ({ node, ...props }) => <Title order={2} {...props} />,
@@ -102,12 +103,27 @@ export default function MdRenderer({
 					return <Divider />;
 				},
 				sup: ({ node, ...props }) => {
-					console.log(sourceAttributions);
 					const id = props.children.toString();
 					const index = parseInt(id, 10);
 					const source = sourceAttributions[index];
+					const badge = (
+						<sup className="cursor-pointer">
+							<Text
+								sx={(theme) => ({
+									backgroundColor:
+										theme.colorScheme === "dark"
+											? theme.colors.blue[9]
+											: theme.colors.blue[2],
+								})}
+								className="px-1 font-semibold"
+								span
+							>
+								{id}
+							</Text>
+						</sup>
+					);
 					if (!source) {
-						return <sup>{id}</sup>;
+						return badge;
 					}
 					return (
 						<HoverCard
@@ -117,9 +133,7 @@ export default function MdRenderer({
 								dropdown: "max-w-[180px]",
 							}}
 						>
-							<HoverCard.Target>
-								<sup className="cursor-pointer">{id}</sup>
-							</HoverCard.Target>
+							<HoverCard.Target>{badge}</HoverCard.Target>
 							<HoverCard.Dropdown>
 								<Stack align="left">
 									{source.imageLink && (

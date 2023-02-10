@@ -1,6 +1,7 @@
 import { Group, Header as Header_, Text } from "@mantine/core";
 import ColorSchemeSwitch from "./ColorSchemeSwitch";
 import Link from "next/link";
+import GitHubIcon from "./GitHubIcon";
 
 function Logo() {
 	return (
@@ -30,6 +31,7 @@ export default function Header() {
 				</Group>
 
 				<Group>
+					<GitHubIcon />
 					<ColorSchemeSwitch />
 				</Group>
 			</Group>
