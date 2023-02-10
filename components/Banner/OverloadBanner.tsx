@@ -10,7 +10,7 @@ export default function OverloadBanner() {
 			opened={opened}
 			withCloseButton
 			onClose={() => setOpened(false)}
-			size="lg"
+			size={300}
 			radius="md"
 		>
 			<IconAlertCircle color="yellow" />
