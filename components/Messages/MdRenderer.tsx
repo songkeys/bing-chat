@@ -12,9 +12,9 @@ import {
 	Image,
 	Anchor,
 	Stack,
-	Box,
 	Group,
 } from "@mantine/core";
+import { useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
@@ -80,11 +80,13 @@ export default function MdRenderer({
 						return <Code>{props.children}</Code>;
 					},
 					pre: function Pre({ node, ...props }) {
+						const value = (props.children[0] as any)?.props?.children?.[0];
 						return (
 							<div className="relative my-2 overflow-hidden">
 								<div className="absolute right-2 top-2">
-									<CopyToClipboardButton value={props.children.toString()} />
+									<CopyToClipboardButton value={value} />
 								</div>
+
 								<Code block className="overflow-auto">
 									{props.children}
 								</Code>
