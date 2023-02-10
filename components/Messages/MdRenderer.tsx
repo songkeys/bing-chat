@@ -18,6 +18,7 @@ import {
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
+import CopyToClipboardButton from "./lib/copy-to-clipboard";
 // @ts-ignore
 import remarkSuper from "./lib/remark-super";
 
@@ -32,7 +33,7 @@ export default function MdRenderer({
 
 	return (
 		<ReactMarkdown
-			className="break-normal overflow-hidden"
+			className="break-normal overflow-hidden max-w-[80vw]"
 			components={{
 				h1: ({ node, ...props }) => <Title order={1} {...props} />,
 				h2: ({ node, ...props }) => <Title order={2} {...props} />,
@@ -75,9 +76,14 @@ export default function MdRenderer({
 				},
 				pre: function Pre({ node, ...props }) {
 					return (
-						<Code block className="overflow-auto">
-							{props.children}
-						</Code>
+						<div className="relative my-2 overflow-hidden">
+							<div className="absolute right-2 top-2">
+								<CopyToClipboardButton value={props.children.toString()} />
+							</div>
+							<Code block className="overflow-auto">
+								{props.children}
+							</Code>
+						</div>
 					);
 				},
 				ol: ({ node, ...props }) => {

@@ -27,7 +27,12 @@ export default function Messages() {
 			{results.map((result, i) => (
 				<m.div
 					key={i}
-					layout
+					// TODO: i can't remove the bounce effect. https://www.framer.com/motion/layout-animations/#%23%23the-content-stretches-undesirably
+					// layout="size"
+					// transition={{
+					// 	duration: 0.3,
+					// 	easings: "easeInOut",
+					// }}
 					className={classNames(
 						"flex",
 						result.role === "user" ? "justify-end" : "justify-start"
