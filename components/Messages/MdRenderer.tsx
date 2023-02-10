@@ -14,7 +14,6 @@ import {
 	Stack,
 	Group,
 } from "@mantine/core";
-import { useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";

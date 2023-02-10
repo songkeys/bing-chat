@@ -1,3 +1,4 @@
+import OverloadBanner from "@/components/Banner/OverloadBanner";
 import { getRootLayout } from "@/components/Layout/RootLayout";
 import Messages from "@/components/Messages";
 import SendBox from "@/components/SendBox";
@@ -7,6 +8,8 @@ import { NextPageWithLayout } from "./_app";
 const Page: NextPageWithLayout = () => {
 	return (
 		<Stack className="container mx-auto p-5 sm:p-1">
+			<OverloadBanner />
+
 			<Messages />
 
 			<SendBox />
