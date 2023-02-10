@@ -5,9 +5,16 @@ import {
 	resultsAtom,
 	textAtom,
 } from "@/utils/store";
-import { ActionIcon, Group, Loader, Textarea } from "@mantine/core";
-import { IconSend } from "@tabler/icons-react";
-import { m, useAnimationControls } from "framer-motion";
+import {
+	ActionIcon,
+	Button,
+	Group,
+	Loader,
+	ScrollArea,
+	Textarea,
+} from "@mantine/core";
+import { IconSend, IconX } from "@tabler/icons-react";
+import { AnimatePresence, m, useAnimationControls } from "framer-motion";
 import { useAtom } from "jotai";
 import { useState } from "react";
 
@@ -32,8 +39,10 @@ export default function SendBox() {
 
 	const controls = useAnimationControls();
 
-	const send = async () => {
-		const v = value.trim();
+	const [showSuggestions, setShowSuggestions] = useState(true);
+
+	const send = async (v: string) => {
+		v = v.trim();
 
 		if (!v || isSending) {
 			//shake
@@ -100,12 +109,56 @@ export default function SendBox() {
 			});
 		} finally {
 			setIsSending(false);
+			setShowSuggestions(true); // flip to enable suggestions
 		}
 	};
 
 	return (
 		<m.div className="fixed left-5 right-5 bottom-5" animate={controls}>
 			<div className="max-w-[600px] mx-auto w-full">
+				{/* suggested questions */}
+				{result?.details.suggestedResponses &&
+					!isSending &&
+					showSuggestions && (
+						<div className="relative">
+							{/* close btn */}
+							<div className="absolute top-0 bottom-3 right-0 z-10 w-20 flex justify-end items-center">
+								<ActionIcon
+									// color="dark.5"
+									variant="light"
+									onClick={() => setShowSuggestions(false)}
+								>
+									<IconX />
+								</ActionIcon>
+							</div>
+
+							{/* scrollable suggestions */}
+							<ScrollArea offsetScrollbars>
+								<div className="flex gap-2 overflow-x-scroll whitespace-nowrap">
+									{result.details.suggestedResponses.map((s, i) => (
+										<AnimatePresence key={s.messageId}>
+											<m.div
+												initial={{ opacity: 0, y: 50 }}
+												animate={{ opacity: 1, y: 0 }}
+												exit={{ opacity: 0, y: 50 }}
+												transition={{ delay: i * 0.2, duration: 0.5 }}
+											>
+												<Button
+													size="xs"
+													className="px-3 py-2 bg-gray-100 rounded-md"
+													onClick={() => send(s.text)}
+												>
+													{s.text}
+												</Button>
+											</m.div>
+										</AnimatePresence>
+									))}
+								</div>
+							</ScrollArea>
+						</div>
+					)}
+
+				{/* textarea */}
 				<Group>
 					<Textarea
 						className="w-full"
@@ -116,7 +169,7 @@ export default function SendBox() {
 						autosize
 						maxRows={5}
 						rightSection={
-							<ActionIcon onClick={() => send()}>
+							<ActionIcon onClick={() => send(value)}>
 								{isSending ? <Loader size={20} /> : <IconSend />}
 							</ActionIcon>
 						}
@@ -129,7 +182,7 @@ export default function SendBox() {
 								e.preventDefault();
 								e.stopPropagation();
 								setTimeout(() => {
-									send();
+									send(value);
 								}, 20);
 							}
 						}}
