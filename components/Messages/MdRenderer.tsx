@@ -42,7 +42,7 @@ export default function MdRenderer({
 					return (
 						<Text
 							component="p"
-							className="my-2 break-words"
+							className="break-words m-0"
 							style={{ wordBreak: "break-word" }}
 							{...props}
 						/>
