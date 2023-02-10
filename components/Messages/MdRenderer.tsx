@@ -104,7 +104,7 @@ export default function MdRenderer({
 				},
 				sup: ({ node, ...props }) => {
 					const id = props.children.toString();
-					const index = parseInt(id, 10);
+					const index = parseInt(id, 10) - 1;
 					const source = sourceAttributions[index];
 					const badge = (
 						<sup className="cursor-pointer">
