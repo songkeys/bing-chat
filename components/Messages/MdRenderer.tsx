@@ -128,7 +128,7 @@ export default function MdRenderer({
 								size="sm"
 								target="_blank"
 								rel="noopener noreferrer"
-								href={source.seeMoreUrl}
+								href={source?.seeMoreUrl}
 								sx={(theme) => ({
 									backgroundColor:
 										theme.colorScheme === "dark"
