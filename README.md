@@ -1,4 +1,6 @@
-# Bind Chat
+# Bing Chat
+
+[Website](https://bing-chat.vercel.app/)
 
 This is an alternative Bing chat frontend.
 
