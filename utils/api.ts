@@ -63,7 +63,6 @@ export const sendMessage = async (
 				continue;
 			}
 
-			// console.log({ chunk });
 			if (chunk?.startsWith(`{"conversationSignature":"`) || Boolean(json)) {
 				json += chunk;
 			} else {
@@ -78,6 +77,10 @@ export const sendMessage = async (
 
 	try {
 		result = JSON.parse(json);
+		if (result && !result.response) {
+			// sometimes the response is in the details for "OffenseResponse"!
+			result.response = result?.details?.text;
+		}
 		onProgress?.(result?.response ?? text);
 	} catch (e) {
 		// console.log({ json });
