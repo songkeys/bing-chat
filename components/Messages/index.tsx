@@ -64,7 +64,7 @@ export default function Messages() {
 						}}
 						className={classNames(
 							"max-w-[80vw]",
-							"px-2 rounded-lg",
+							"px-2 rounded-lg p-2",
 							result.role === "user" ? "rounded-tr-sm" : "rounded-tl-sm"
 						)}
 					>
