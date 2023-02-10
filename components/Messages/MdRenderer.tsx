@@ -104,7 +104,7 @@ export default function MdRenderer({
 				sup: ({ node, ...props }) => {
 					console.log(sourceAttributions);
 					const id = props.children.toString();
-					const index = parseInt(id, 10);
+					const index = parseInt(id, 10) - 1;
 					const source = sourceAttributions[index];
 					if (!source) {
 						return <sup>{id}</sup>;
