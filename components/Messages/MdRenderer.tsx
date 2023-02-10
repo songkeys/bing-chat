@@ -13,6 +13,7 @@ import {
 	Anchor,
 	Stack,
 	Box,
+	Group,
 } from "@mantine/core";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
@@ -31,7 +32,7 @@ export default function MdRenderer({
 
 	return (
 		<ReactMarkdown
-			className="break-words overflow-hidden"
+			className="break-normal overflow-hidden"
 			components={{
 				h1: ({ node, ...props }) => <Title order={1} {...props} />,
 				h2: ({ node, ...props }) => <Title order={2} {...props} />,
@@ -43,6 +44,16 @@ export default function MdRenderer({
 					return (
 						<Text
 							component="p"
+							className="break-words m-0"
+							style={{ wordBreak: "break-word" }}
+							{...props}
+						/>
+					);
+				},
+				span: ({ node, ...props }) => {
+					return (
+						<Text
+							component="span"
 							className="break-words m-0"
 							style={{ wordBreak: "break-word" }}
 							{...props}
@@ -93,9 +104,13 @@ export default function MdRenderer({
 						</List>
 					);
 				},
-				li: ({ node, ...props }) => {
-					return <List.Item>{props.children}</List.Item>;
-				},
+				// li: ({ node, ...props }) => {
+				// 	return (
+				// 		<List.Item>
+				// 			{props.children}
+				// 		</List.Item>
+				// 	);
+				// },
 				mark: ({ node, ...props }) => {
 					return <Mark>{props.children}</Mark>;
 				},
@@ -109,6 +124,11 @@ export default function MdRenderer({
 					const badge = (
 						<sup className="cursor-pointer">
 							<Text
+								component="a"
+								size="sm"
+								target="_blank"
+								rel="noopener noreferrer"
+								href={source.seeMoreUrl}
 								sx={(theme) => ({
 									backgroundColor:
 										theme.colorScheme === "dark"
@@ -116,12 +136,13 @@ export default function MdRenderer({
 											: theme.colors.blue[2],
 								})}
 								className="px-1 font-semibold"
-								span
+								inline
 							>
 								{id}
 							</Text>
 						</sup>
 					);
+
 					if (!source) {
 						return badge;
 					}
@@ -135,7 +156,7 @@ export default function MdRenderer({
 						>
 							<HoverCard.Target>{badge}</HoverCard.Target>
 							<HoverCard.Dropdown>
-								<Stack align="left">
+								<Group>
 									{source.imageLink && (
 										<Stack>
 											<Image
@@ -149,9 +170,15 @@ export default function MdRenderer({
 										</Stack>
 									)}
 
-									<div className="flex items-center space-x-2">
+									<Anchor
+										href={source.seeMoreUrl}
+										size="sm"
+										target="_blank"
+										rel="noopener noreferrer"
+									>
 										{source.imageFavicon && (
 											<Image
+												className="inline-block align-middle mr-2"
 												width={16}
 												height={16}
 												src={`data:image/png;base64,${source.imageFavicon}`}
@@ -161,17 +188,10 @@ export default function MdRenderer({
 												}
 											/>
 										)}
-										<Anchor
-											href={source.seeMoreUrl}
-											size="sm"
-											target="_blank"
-											rel="noopener noreferrer"
-										>
-											{source.providerDisplayName ||
-												"Search: " + source.searchQuery}
-										</Anchor>
-									</div>
-								</Stack>
+										{source.providerDisplayName ||
+											"Search: " + source.searchQuery}
+									</Anchor>
+								</Group>
 							</HoverCard.Dropdown>
 						</HoverCard>
 					);
