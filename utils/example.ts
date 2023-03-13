@@ -176,6 +176,8 @@ export const exampleResponse = {
 			"Some people may also believe that life is extremely personal, therefore each person's purpose will be different, or that life is created by a supernatural entity called God, that God had an intelligent purpose in creating us, and that this intelligent purpose is the meaning of life.",
 	},
 	invocationId: 1,
+	jailbreakConversationId: "b8b5b5b5-5b5b-5b5b-5b5b-5b5b5b5b5b5b",
+	parentMessageId: "00000000-0000-0000-0000-000000000000",
 };
 
 export type ResponseMessage = typeof exampleResponse;

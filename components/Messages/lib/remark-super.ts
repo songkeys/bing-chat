@@ -1,7 +1,7 @@
 import { visit } from "unist-util-visit";
 
 // match "[^word^]"
-const REGEX = /\[\^[^\d]+\^\]/g;
+const REGEX = /\[\^\d+\^\]/g;
 
 // refer to https://github.com/rhysd/remark-emoji
 export default function remarkSuper() {

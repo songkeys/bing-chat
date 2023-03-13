@@ -17,19 +17,16 @@ import { IconSend, IconX } from "@tabler/icons-react";
 import { AnimatePresence, m, useAnimationControls } from "framer-motion";
 import { useAtom } from "jotai";
 import { useState } from "react";
+import ClearIcon from "./ClearIcon";
 
 export default function SendBox() {
 	const [value, setValue] = useState("");
 	const [opt, setOpt] = useState<{
-		conversationId?: string;
-		conversationSignature?: string;
-		clientId?: string;
-		invocationId?: number;
+		jailbreakConversationId?: string;
+		parentMessageId?: string;
 	}>({
-		conversationId: undefined,
-		conversationSignature: undefined,
-		clientId: undefined,
-		invocationId: undefined,
+		jailbreakConversationId: undefined,
+		parentMessageId: undefined,
 	});
 
 	const [isSending, setIsSending] = useAtom(isSendingAtom);
@@ -79,10 +76,8 @@ export default function SendBox() {
 			if (result) {
 				setResult(result);
 				setOpt({
-					conversationId: result.conversationId,
-					conversationSignature: result.conversationSignature,
-					clientId: result.clientId,
-					invocationId: result.invocationId,
+					jailbreakConversationId: result.jailbreakConversationId,
+					parentMessageId: result.parentMessageId,
 				});
 				if (result.response) {
 					setText(result.response);
@@ -111,6 +106,23 @@ export default function SendBox() {
 			setIsSending(false);
 			setShowSuggestions(true); // flip to enable suggestions
 		}
+	};
+
+	const clearMessages = () => {
+		if (isSending) {
+			//shake
+			controls.start({
+				x: [0, 5, -5, 5, -5, 5, -5, 5, -5, 0],
+				transition: { duration: 1 },
+			});
+			return;
+		}
+		setResults([]);
+		setResult(undefined);
+		setOpt({
+			jailbreakConversationId: undefined,
+			parentMessageId: undefined,
+		});
 	};
 
 	return (
@@ -159,9 +171,16 @@ export default function SendBox() {
 					)}
 
 				{/* textarea */}
-				<Group>
+				<Group noWrap>
+					<ActionIcon
+						color="gray"
+						variant="subtle"
+						onClick={() => clearMessages()}
+					>
+						<ClearIcon />
+					</ActionIcon>
 					<Textarea
-						className="w-full"
+						className="flex-grow w-full"
 						placeholder="Ask me anything..."
 						autoCapitalize="true"
 						spellCheck

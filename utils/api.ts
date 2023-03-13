@@ -4,27 +4,21 @@ import { ResponseMessage } from "./example";
 export const sendMessage = async (
 	prompt: string,
 	{
-		conversationId,
-		clientId,
-		conversationSignature,
-		invocationId,
+		jailbreakConversationId,
+		parentMessageId,
 		onProgress,
 	}: {
-		conversationId?: string;
-		clientId?: string;
-		conversationSignature?: string;
-		invocationId?: number;
+		jailbreakConversationId?: string;
+		parentMessageId?: string;
 		onProgress?: (text: string) => void;
 	}
 ): Promise<ResponseMessage | undefined> => {
-	const response = await fetch("https://gpt.song.work/chat", {
+	const response = await fetch("http://localhost:1314/chat", {
 		method: "POST",
 		headers: { "Content-Type": "application/json" },
 		body: JSON.stringify({
-			conversationId,
-			clientId,
-			conversationSignature,
-			invocationId,
+			jailbreakConversationId,
+			parentMessageId,
 			prompt,
 		}),
 	});
@@ -63,7 +57,7 @@ export const sendMessage = async (
 				continue;
 			}
 
-			if (chunk?.startsWith(`{"conversationSignature":"`) || Boolean(json)) {
+			if (chunk?.startsWith(`{"conversationId":"`) || Boolean(json)) {
 				json += chunk;
 			} else {
 				text = text + chunk?.toString() ?? "";
