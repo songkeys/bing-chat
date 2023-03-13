@@ -13,7 +13,7 @@ export const sendMessage = async (
 		onProgress?: (text: string) => void;
 	}
 ): Promise<ResponseMessage | undefined> => {
-	const response = await fetch("http://localhost:1314/chat", {
+	const response = await fetch("https://gpt.song.work/chat", {
 		method: "POST",
 		headers: { "Content-Type": "application/json" },
 		body: JSON.stringify({
